@@ -1,0 +1,22 @@
+# --- Gateway Connection ---
+gateways:
+  duckdb:
+    connection:
+      type: duckdb
+
+      catalogs:
+        my_lake:
+          type: ducklake
+          path: /Volumes/External/developyr/source/ducklake-demo/data/catalog.ducklake
+          data_path: /Volumes/External/developyr/source/ducklake-demo/data/catalog_data/
+      extensions:
+        - ducklake
+    state_connection:
+      type: duckdb
+      database: /Volumes/External/developyr/source/ducklake-demo/04_sqlmesh_pipeline/sqlmesh_state.db
+
+default_gateway: duckdb
+
+model_defaults:
+  dialect: duckdb
+  start: '2025-01-01'

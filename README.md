@@ -1,311 +1,242 @@
-# ducklake-demo
-Complete demo materials for 'The Local Lakehouse' talk. Build a production-grade analytics stack on your laptop using DuckDB, dbt, SQLMesh &amp; DuckLake. Transform raw Ondoriya world data through bronze/silver/gold layers. 10x faster than cloud, 90% cheaper. Modern data engineering without the cloud bills.
-# 🦆 The Local Lakehouse - DuckLake Demo
+# DuckLake Demo: The Local Lakehouse
 
-> **"From CSV to Insights in Under 10 Minutes"**
-> 
-> Complete demo materials for building a production-grade analytics stack on your laptop using DuckDB, dbt, SQLMesh & DuckLake.
+A complete demonstration of building a production-grade data lakehouse on your laptop using DuckDB, DuckLake, dbt, and SQLMesh.
 
-[![Kaggle Dataset](https://img.shields.io/badge/Dataset-Ondoriya%20on%20Kaggle-blue?logo=kaggle)](https://www.kaggle.com/datasets/developyr/ondoriya-seed-world-simulation-dataset)
-[![YouTube](https://img.shields.io/badge/Tutorial-@Developyr-red?logo=youtube)](https://youtube.com/@Developyr)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+## Overview
 
-## 🚀 What You'll Experience
+This project demonstrates the "Local Lakehouse" architecture - a modern data stack that runs entirely on your local machine while providing enterprise-grade capabilities including ACID transactions, time travel, and sophisticated data transformations.
 
-**Transform raw world simulation data through a complete lakehouse architecture:**
+**Key Technologies:**
+- **DuckDB**: High-performance analytical database engine
+- **DuckLake**: Open table format providing ACID transactions and versioning
+- **dbt**: Data transformation and testing framework
+- **SQLMesh**: Next-generation data transformation and orchestration
+- **Streamlit**: Interactive data visualization dashboard
 
-- ⚡ **10x faster** analytics than traditional cloud warehouses
-- 💰 **90% cost reduction** - no cloud bills, just your laptop
-- 🛠️ **5-minute setup** from zero to running queries
-- 📊 **Real insights** from 1.4M+ population records across 200 regions
-- 🏗️ **Production patterns** - bronze/silver/gold data layers
+## Dataset
 
-**Perfect for:** Data engineers wanting to explore modern lakehouse architecture without cloud complexity or costs.
+**Ondoriya Synthetic World Dataset**
+- 1,425,690 people across 200 regions
+- 4 political factions with demographic distributions
+- Regional biome classifications and political control data
+- Age demographics and population distributions
 
-## 📋 Prerequisites
 
-**System Requirements:**
-- **RAM:** 8GB+ recommended (16GB ideal)
-- **Storage:** 10GB free space
-- **OS:** macOS, Linux, or Windows with WSL2
 
-**Technical Background:**
-- Intermediate SQL knowledge
-- Basic Python familiarity  
-- Understanding of data pipeline concepts
-- Familiarity with dbt or similar transformation tools (helpful but not required)
+## Architecture
 
-## ⚡ Quick Start
+### Data Flow
+```
+Raw CSVs → DuckLake Bronze → Silver (Staging) → Gold (Marts) → Dashboard
+```
 
-Get the full lakehouse running in **under 5 minutes:**
+### Layer Descriptions
 
+**Bronze Layer**: Raw data ingested as-is into DuckLake format
+- ACID compliant storage
+- Time travel capabilities
+- Schema enforcement
+- Automatic compression and optimization
+
+**Silver Layer**: Cleaned and standardized data
+- Column name standardization
+- Data type corrections
+- Basic validation and quality checks
+- Optimized for downstream consumption
+
+**Gold Layer**: Business-ready analytical tables
+- Aggregated metrics and KPIs
+- Dimensional models
+- Regional and faction analytics
+- Performance optimized for querying
+
+## Quick Start
+
+### Prerequisites
 ```bash
-# 1. Clone and setup
-git clone https://github.com/developyrs/ducklake-demo.git
-cd ducklake-demo
+# Python environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Download sample data (or use your own Ondoriya dataset)
-python scripts/download_data.py
-
-# 4. Run the complete pipeline
-python demo_scripts/full_pipeline_demo.py
-
-# 🎉 That's it! Your lakehouse is running locally.
+# Install dependencies
+pip install duckdb ducklake dbt-duckdb sqlmesh streamlit plotly pandas
 ```
 
-**Verify it worked:**
-```sql
--- Connect to your lakehouse and run
-SELECT 
-    Current_Faction,
-    COUNT(*) as regions,
-    AVG(population) as avg_population
-FROM gold.regional_insights 
-GROUP BY Current_Faction;
+### 1. Data Ingestion
+```bash
+cd 02_bronze_ingestion/
+python ingest_to_ducklake.py
 ```
 
-## 🗺️ Learning Journey
+### 2. dbt Pipeline
+```bash
+cd 03_dbt_pipeline/
+dbt run
+dbt test
+```
 
-Follow this path to build your understanding step-by-step:
+### 3. SQLMesh Pipeline
+```bash
+cd 04_sqlmesh_pipeline/
+sqlmesh plan dev
+# Type 'y' when prompted to apply changes
+```
 
-### **Phase 1: Explore the Data** 📊
-**Location:** `01_eda/`
-- **Goal:** Understand Ondoriya's regional patterns and demographics
-- **Tools:** DuckDB + Python
-- **Time:** ~15 minutes
-- **Key Insight:** Discover political power distribution across 200 regions
+### 4. Launch Dashboard
+```bash
+cd 05_streamlit_dashboard/
+streamlit run dashboard.py
+```
 
-**What you'll find:**
-- Population density patterns across biomes  
-- Faction control distribution (Praxis 38%, Empyrean 30%, Vesperian 22%, Factionless 10%)
-- Regional economic and demographic characteristics
+## Key Features Demonstrated
 
-### **Phase 2: Bronze Layer - Raw Data Ingestion** 🥉
-**Location:** `02_bronze_ingestion/`
-- **Goal:** Ingest raw CSVs into DuckLake with full versioning
-- **Tools:** DuckLake (Delta Lake on DuckDB)
-- **Time:** ~10 minutes  
-- **Key Insight:** ACID transactions and time travel on your laptop
+### DuckLake Capabilities
+- **ACID Transactions**: Guaranteed data consistency
+- **Time Travel**: Query historical versions of tables
+- **Schema Evolution**: Handle schema changes gracefully
+- **Automatic Optimization**: Background compaction and optimization
 
-**What you'll learn:**
-- Why Delta Lake format matters for data reliability
-- How to handle schema evolution gracefully  
-- Version control for your data (like Git, but for datasets)
+### Transformation Patterns
+- **dbt Approach**: SQL-first, testing-oriented, mature ecosystem
+- **SQLMesh Approach**: Next-generation features, virtual environments, advanced state management
+- **Side-by-side Comparison**: Same business logic implemented in both frameworks
 
-### **Phase 3: Silver Layer - Clean & Validated Data** 🥈
-**Location:** `03_silver_dbt/`
-- **Goal:** Transform and validate data using modern dbt practices
-- **Tools:** dbt-core + DuckDB adapter
-- **Time:** ~15 minutes
-- **Key Insight:** Production-grade data transformations without complex infrastructure
+### Analytics Capabilities
+- Regional population analysis
+- Faction power distribution
+- Demographic trends and breakdowns
+- Data quality monitoring
+- Interactive visualizations
 
-**Transformations you'll build:**
-- Clean and standardize regional naming conventions
-- Join population data with geographic and political info
-- Create validated dimensional models for analysis
-- Implement data quality tests and documentation
+## Performance Highlights
 
-### **Phase 4: Gold Layer - Business Intelligence** 🥇
-**Location:** `04_gold_sqlmesh/`
-- **Goal:** Create analytical marts and dashboards using SQLMesh
-- **Tools:** SQLMesh + DuckDB
-- **Time:** ~15 minutes
-- **Key Insight:** Enterprise-grade data modeling on a single machine
+- **Ingestion**: 1.4M records in under 30 seconds
+- **Transformations**: Complex joins and aggregations in seconds
+- **Queries**: Sub-second response times on analytical workloads
+- **Storage**: 80%+ compression compared to raw CSV
 
-**Analytics you'll unlock:**
-- **Regional Power Analysis:** Which factions dominate which biomes?
-- **Demographic Insights:** Population patterns and political alignment
-- **Economic Indicators:** Industry distribution across political regions
-- **Historical Voting Trends:** Political stability patterns
+## Use Cases
 
-## 🎯 Live Demo Highlights
+This architecture is ideal for:
 
-**For presentations and workshops:**
+**Development & Testing**
+- Local development of data pipelines
+- Testing transformation logic
+- Prototyping analytical models
 
-### **Speed Comparison** ⚡
+**Edge Analytics**
+- Embedded analytics in applications
+- IoT data processing
+- Remote location analytics
+
+**Cost-Sensitive Environments**
+- Startups and small teams
+- Proof-of-concept projects
+- Development environments
+
+**Data Science Workflows**
+- Feature engineering pipelines
+- Model training data preparation
+- Analytical research projects
+
+## Scaling Considerations
+
+**Excellent for** (< 1TB datasets):
+- Analytical workloads
+- Batch processing
+- Single-node performance
+- Development workflows
+
+**Consider alternatives for**:
+- Multi-petabyte datasets
+- High-concurrency OLTP
+- Distributed processing requirements
+- Multi-region deployments
+
+## dbt vs SQLMesh Comparison
+
+| Feature | dbt | SQLMesh |
+|---------|-----|---------|
+| **Learning Curve** | Moderate | Steep |
+| **Testing** | Built-in framework | Advanced auditing |
+| **State Management** | External orchestrator | Built-in incremental |
+| **Virtual Environments** | Limited | Advanced |
+| **Column Lineage** | Third-party tools | Native support |
+| **Ecosystem** | Mature, extensive | Growing, modern |
+
+## Configuration Details
+
+### DuckLake Connection
 ```python
-# Traditional Cloud Warehouse: 15+ seconds
-# Local DuckLake: 1.2 seconds
-# → 12.5x performance improvement
-
-# Run this yourself:
-python demo_scripts/performance_comparison.py
+import duckdb
+con = duckdb.connect(":memory:")
+con.execute("ATTACH 'ducklake:./data/catalog.ducklake' as my_lake")
 ```
 
-### **Cost Comparison** 💰
-```
-Traditional Cloud Stack (per month):
-├── Data Warehouse: $2,000
-├── ETL Platform: $800  
-├── BI Tools: $1,200
-└── Data Transfer: $500
-    Total: $4,500/month
-
-Local Lakehouse:
-└── Your laptop: $0/month ✅
-```
-
-### **Feature Comparison** 🔄
-| Feature | Cloud Warehouse | Local DuckLake |
-|---------|----------------|----------------|
-| **Setup Time** | 2-4 weeks | 5 minutes ✅ |
-| **Query Performance** | Good | Excellent ✅ |
-| **ACID Transactions** | Yes | Yes ✅ |
-| **Time Travel** | Yes | Yes ✅ |
-| **Cost at Scale** | $$$$ | $ ✅ |
-| **Offline Access** | No | Yes ✅ |
-
-## 📊 Sample Insights You'll Discover
-
-**Regional Analysis Results:**
-- **Mountain regions** favor Praxis Directorate (infrastructure focus)
-- **River valleys** lean Empyrean Synod (agricultural tradition) 
-- **Coastal areas** prefer Vesperian Concord (trade orientation)
-- **Wasteland settlements** remain Factionless (independence)
-
-**Population Patterns:**
-- Dense urban centers: 8,000-18,000 people
-- Rural settlements: 2,000-4,000 people  
-- Frontier outposts: 500-1,500 people
-- Clear correlation between biome type and political preference
-
-## 🛠️ Technical Architecture
-
-**Data Flow:**
-```
-Raw Ondoriya CSVs 
-    ↓ (DuckLake ingestion)
-Bronze Tables (versioned, raw data)
-    ↓ (dbt transformations) 
-Silver Tables (cleaned, joined)
-    ↓ (SQLMesh modeling)
-Gold Tables (analytical marts)
-    ↓ (DuckDB queries)
-Insights & Visualizations
+### dbt profiles.yml
+```yaml
+ondoriya_dbt:
+  outputs:
+    dev:
+      type: duckdb
+      path: ':memory:'
+      extensions: [ducklake]
+      attach:
+        - path: ducklake:./data/catalog.ducklake
+          alias: my_lake
+      schema: bronze
 ```
 
-**Why This Stack:**
-- **DuckDB:** Column-oriented analytics engine optimized for OLAP
-- **DuckLake:** Delta Lake functionality without Spark overhead
-- **dbt:** Modern transformation patterns with testing and documentation
-- **SQLMesh:** Advanced data modeling with dependency management
-
-## 🎮 Interactive Features
-
-**Try These Queries:**
-```sql
--- Find regions with highest political volatility
-SELECT region_name, vote_changes 
-FROM gold.political_stability 
-WHERE vote_changes >= 3 
-ORDER BY vote_changes DESC;
-
--- Analyze demographic patterns by faction
-SELECT 
-    faction,
-    AVG(age) as avg_age,
-    COUNT(*) as population
-FROM gold.demographic_analysis 
-GROUP BY faction;
-
--- Regional economic diversity index  
-SELECT 
-    region_name,
-    industry_diversity_score,
-    primary_industry
-FROM gold.economic_indicators 
-ORDER BY industry_diversity_score DESC 
-LIMIT 10;
+### SQLMesh config.yaml
+```yaml
+gateways:
+  local_gateway:
+    connection:
+      type: duckdb
+      catalogs:
+        my_lake:
+          type: ducklake
+          path: ./data/catalog.ducklake
+          data_path: ./data/catalog_data/
 ```
 
-## 📁 Repository Structure
+## Troubleshooting
 
-```
-ducklake-demo/
-├── 📊 01_eda/                    # Exploratory Data Analysis
-│   ├── explore_ondoriya.ipynb          # Interactive analysis
-│   ├── population_analysis.py          # Demographics deep-dive  
-│   └── regional_patterns.py            # Geographic insights
-├── 🥉 02_bronze_ingestion/       # Raw data ingestion with versioning
-│   ├── raw_to_ducklake.py              # CSV → Delta Lake conversion
-│   ├── bronze_setup.sql               # Table creation scripts
-│   └── data_validation.py             # Quality checks
-├── 🥈 03_silver_dbt/            # Clean, tested transformations  
-│   ├── dbt_project.yml                # dbt configuration
-│   ├── models/                         # Transformation models
-│   │   ├── staging/                    # Raw data standardization
-│   │   └── intermediate/               # Business logic layer
-│   ├── tests/                          # Data quality tests
-│   └── docs/                           # Auto-generated documentation
-├── 🥇 04_gold_sqlmesh/          # Business intelligence layer
-│   ├── config.py                       # SQLMesh configuration  
-│   ├── models/                         # Analytical models
-│   │   ├── regional_insights.sql       # Core regional analysis
-│   │   ├── demographic_analysis.sql    # Population patterns
-│   │   └── political_stability.sql     # Voting trend analysis
-│   └── macros/                         # Reusable SQL functions
-├── 🎬 demo_scripts/              # Live presentation materials
-│   ├── full_pipeline_demo.py           # Complete end-to-end demo
-│   ├── performance_comparison.py       # Speed benchmarking
-│   └── interactive_queries.sql         # Audience participation queries  
-├── 📁 data/                      # Data management
-│   ├── README.md                       # Links to Kaggle dataset
-│   └── download_data.py               # Automated data fetching
-└── 📚 docs/                     # Additional documentation
-    ├── SETUP_GUIDE.md                 # Detailed installation
-    ├── TROUBLESHOOTING.md             # Common issues & solutions
-    └── ADVANCED_USAGE.md              # Power user features
-```
+**Connection Issues**
+- Verify DuckLake extension is installed: `INSTALL ducklake;`
+- Check file paths are absolute when needed
+- Ensure proper permissions on data directory
 
-## 🤝 Getting Help
+**Performance Issues**
+- Monitor memory usage with large datasets
+- Use appropriate materialization strategies
+- Consider partitioning for large tables
 
-**Issues during setup?**
+**Schema Issues**
+- Validate column names match between layers
+- Check data types in transformations
+- Use `DESCRIBE` to inspect table schemas
 
-1. **Check the troubleshooting guide:** `docs/TROUBLESHOOTING.md`
-2. **Common solutions:**
-   - **Memory issues:** Reduce sample data size in `config.py`
-   - **Python errors:** Ensure you're using Python 3.8+
-   - **DuckDB issues:** Try `pip install --upgrade duckdb`
+## License
 
-**Still stuck?**
-- 📋 [Open an Issue](https://github.com/yourusername/ducklake-demo/issues)
-- 📧 Email: daniel@developyr.com
-- 💬 Connect: [LinkedIn](https://linkedin.com/in/wallacedanielk)
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🔗 Related Resources
+## Acknowledgments
 
-**Learn More:**
-- 📺 [Full Talk Recording](https://youtube.com/@Developyr) - Complete presentation with live demo
-- 📊 [Ondoriya Dataset](https://kaggle.com/datasets/danielkwallace/ondoriya-seed-world-simulation-dataset) - Raw data on Kaggle
-- 🏢 [Developyr Consulting](https://developyr.com) - Professional data engineering services
-- 📚 [DuckDB Documentation](https://duckdb.org/docs/) - Official DuckDB reference
-- 🛠️ [dbt Learn](https://learn.getdbt.com/) - Modern data transformation practices
+- DuckDB team for the incredible analytical engine
+- DuckLake contributors for the open table format
+- dbt Labs for the transformation framework
+- Tobiko Data for SQLMesh innovation
+- Streamlit team for the visualization platform
 
-**Technical Deep Dives:**
-- [Delta Lake on DuckDB](https://delta.io/blog/delta-lake-duckdb/) - Why DuckLake matters
-- [SQLMesh Documentation](https://sqlmesh.readthedocs.io/) - Advanced data modeling
-- [Modern Data Stack Guide](https://developyr.com/blog/modern-data-stack) - Architecture principles
 
-## 📄 License & Attribution
+## Contact
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-**Dataset Attribution:**
-The Ondoriya world simulation dataset is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). When using this data, please credit: *"Ondoriya dataset by Daniel K. Wallace - [kaggle.com/datasets/danielkwallace/ondoriya-seed-world-simulation-dataset](https://kaggle.com/datasets/danielkwallace/ondoriya-seed-world-simulation-dataset)"*
-
-## 🙏 Acknowledgments
-
-- **DuckDB Team** for creating an exceptional analytics engine
-- **Delta Lake Community** for bringing ACID transactions to data lakes  
-- **dbt Labs** for revolutionizing data transformation practices
-- **Tobiko Data** for building SQLMesh and advancing data modeling
-- **Data Community** for pushing the boundaries of local-first analytics
+For questions about this demo or speaking opportunities:
+- Email: daniel@developyr.com
+- LinkedIn: /in/wallacedanielk
+- Company: developyr.com
 
 ---
 
-⭐ **Found this helpful?** Give it a star and [subscribe to @Developyr](https://youtube.com/@Developyr) for more data engineering content!
-
-**Built with ❤️ for the modern data stack**
+*Built with ❤️ for the data community*

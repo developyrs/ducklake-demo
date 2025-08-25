@@ -5,6 +5,7 @@ duckdb
 dbt-core
 dbt-duckdb
 sqlmesh
+sqlmesh[lsp]
 
 # Data Analysis
 polars
@@ -25,3 +26,5 @@ pytest
 matplotlib
 seaborn
 pyarrow
+streamlit
+plotly
