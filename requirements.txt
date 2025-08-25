@@ -1,0 +1,27 @@
+# Core Data Stack
+duckdb
+
+# Data Transformation & Modeling
+dbt-core
+dbt-duckdb
+sqlmesh
+
+# Data Analysis
+polars
+
+# Jupyter & Interactive Development
+jupyter
+ipykernel
+notebook
+
+# Utilities
+requests
+tqdm
+python-dotenv
+
+# Testing
+pytest
+
+matplotlib
+seaborn
+pyarrow
