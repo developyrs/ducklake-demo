@@ -32,10 +32,9 @@ def download_file(url: str, local_path: Path) -> bool:
         # Get file size for progress bar
         total_size = int(response.headers.get('content-length', 0))
         
-        # Create parent directory if it doesn't exist
+
         local_path.parent.mkdir(parents=True, exist_ok=True)
         
-        # Download with progress bar
         with open(local_path, 'wb') as f, tqdm(
             desc=local_path.name,
             total=total_size,

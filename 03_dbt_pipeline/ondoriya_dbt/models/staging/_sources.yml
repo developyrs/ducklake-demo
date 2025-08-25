@@ -15,3 +15,16 @@ sources:
         description: "Faction control distribution"
       - name: households
         description: "Household data"
+
+  - name: silver
+    description: "Silver layer tables from DuckLake"
+    schema: silver
+    tables:
+      - name: stg_households
+        description: "household data"
+      - name: stg_people
+        description: "population data"
+      - name: stg_region_biome
+        description: "region biome data"
+      - name: stg_regions
+        description: "region data"

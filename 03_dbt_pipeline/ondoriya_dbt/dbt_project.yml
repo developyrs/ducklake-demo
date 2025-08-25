@@ -34,12 +34,12 @@ models:
     # Staging models (Bronze → Silver)
     staging:
       +materialized: incremental
-      +schema: my_lake.silver
+      +schema: silver
     
     # Mart models (Silver → Gold)  
     marts:
       +materialized: incremental
-      +schema: my_lake.gold
+      +schema: gold
 
 # Seeds configuration
 seeds:
