@@ -64,8 +64,11 @@ pip install duckdb ducklake dbt-duckdb sqlmesh streamlit plotly pandas
 
 ### 1. Data Ingestion
 ```bash
+cd data
+python download_data.py
+
 cd 02_bronze_ingestion/
-python ingest_to_ducklake.py
+python raw_to_ducklake.py
 ```
 
 ### 2. dbt Pipeline
