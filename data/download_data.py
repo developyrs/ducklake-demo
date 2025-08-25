@@ -19,7 +19,8 @@ REQUIRED_FILES = {
     "regions.csv": "political_geography/regions.csv",
     "region_biome.csv": "political_geography/region_biome.csv", 
     "faction_distribution.csv": "political_geography/faction_distribution.csv",
-    "people.csv": "core_demographics/people.csv"
+    "people.csv": "core_demographics/people.csv",
+    "households.csv": "core_demographics/households.csv"
 }
 
 def download_file(url: str, local_path: Path) -> bool:

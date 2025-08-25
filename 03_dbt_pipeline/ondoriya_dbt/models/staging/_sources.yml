@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: "Bronze layer tables from DuckLake"
+    schema: bronze
+    tables:
+      - name: regions
+        description: "Regional data"
+      - name: people  
+        description: "Population data"
+      - name: region_biome
+        description: "Biome classifications"
+      - name: faction_distribution
+        description: "Faction control distribution"
+      - name: households
+        description: "Household data"
