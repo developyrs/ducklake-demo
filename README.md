@@ -182,25 +182,44 @@ ondoriya_dbt:
   outputs:
     dev:
       type: duckdb
-      path: ':memory:'
-      extensions: [ducklake]
-      attach:
-        - path: ducklake:./data/catalog.ducklake
-          alias: my_lake
+      path: "ducklake:/Volumes/External/developyr/source/ducklake-demo/data/catalog.ducklake"
+      extensions:
+        - ducklake
       schema: bronze
+      threads: 1
+
+    prod:
+      type: duckdb
+      path: prod.duckdb
+      threads: 4
+
+  target: dev
+
 ```
 
 ### SQLMesh config.yaml
 ```yaml
 gateways:
-  local_gateway:
+  duckdb:
     connection:
       type: duckdb
+
       catalogs:
         my_lake:
           type: ducklake
-          path: ./data/catalog.ducklake
-          data_path: ./data/catalog_data/
+          path: /Volumes/External/developyr/source/ducklake-demo/data/catalog.ducklake
+          data_path: /Volumes/External/developyr/source/ducklake-demo/data/catalog_data/
+      extensions:
+        - ducklake
+    state_connection:
+      type: duckdb
+      database: /Volumes/External/developyr/source/ducklake-demo/04_sqlmesh_pipeline/sqlmesh_state.db
+
+default_gateway: duckdb
+
+model_defaults:
+  dialect: duckdb
+  start: '2025-01-01'
 ```
 
 ## Troubleshooting
